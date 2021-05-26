@@ -33,9 +33,9 @@ class Commissioned(Employee):
         tw_salary = self.salary / 2
         discounts = self.calculate_discounts()
         liquid_salary = tw_salary + commission - discounts
-        self.pay_salary(brute_salary=tw_salary, liquid_salary=liquid_salary,commission=commission, union_discounts=discounts )
+        self.pay_salary(brute_salary=tw_salary, liquid_salary=liquid_salary, commission=commission, discounts=discounts )
 
-    def pay_salary(self, brute_salary, liquid_salary, commission, union_discounts):
+    def pay_salary(self, brute_salary, liquid_salary, commission, discounts):
         print("------------------------- Contracheque --------------------------\n")
         print("---------------------- Dados do Funcionário ---------------------\n")
         print(f'Nome: {self.name}')
@@ -46,7 +46,7 @@ class Commissioned(Employee):
         print(f'Salário Bruto: R$ {brute_salary}')
         print(f'Salário Líquido: R$ {liquid_salary}')
         print(f'Valor total de comissões: R$ {commission}')
-        print(f'Total de descontos: R$ {union_discounts}')
+        print(f'Total de descontos: R$ {discounts}')
         print()
 
         # Reseting non fixed values

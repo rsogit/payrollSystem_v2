@@ -58,3 +58,47 @@ Func | Título | Breve descrição
 **8** (Não feito) | Undo/redo | Qualquer transação associada as funcionalidades **1** a **7**  deve ser _desfeita_ (*undo*) ou _refeita_ (*redo*).
 **9** (Feito) | Agenda de Pagamento | Cada empregado é pago de acordo com uma "_agenda de  pagamento_". Empregados podem selecionar a agenda de  pagamento que desejam. Por _default_, as agendas  "_semanalmente_", "_mensalmente_" e "_bi-semanalmente_" são usadas, como explicado na descrição geral. Posteriormente, um empregado pode pedir para ser pago de acordo com qualquer uma dessas agendas.
 **10** (Feito) | Criação de Novas Agendas de Pagamento | A direção da empresa pode criar uma nova agenda de  pagamento e disponibilizá-la para os empregados  escolherem, se assim desejarem. Uma agenda é especificada através de um string. Alguns exemplos  mostram as possibilidades: "**mensal 1**": _dia 1 de todo mês_ ; "**mensal $**": _último dia útil de todo mês_; "**semanal 1 segunda**": _toda semana  às segundas-feiras_; "**semanal 2 segunda**": _a cada 2 semanas às segundas-feiras_ ; etc.
+---
+# Code Smells
+
+No menu principal (main.py), havia uma cadeia de condicionais que dificultavam a manutenção e entendimento do menu e tornava o código repetido e sujo. 
+Apliquei o padrão Strategy para tratar cada parte do menu de funcionalidades de forma separada por meio da interface MainMenuStrategy.
+
+Além disso, encontrei os seguintes code smells:
+- [Long Method](https://sourcemaking.com/refactoring/smells/long-method) 
+  - editEmployee em Company.py;
+  - set_schedule em Employee.py;
+
+- [Duplicate Code](https://sourcemaking.com/refactoring/smells/duplicate-code)
+  - Na função main
+  - Na estrutura de menus
+
+- [Data Class](https://sourcemaking.com/refactoring/smells/data-class)
+  - As classes Sales e Timecard se encaixam no code smell "Data Class" pois só contém propriedades e métodos de acesso.
+
+
+----
+# Refactor
+
+### Strategy
+
+O padrão *Strategy* foi usado para resolver o problema da cadeia de condicionais e lidar com os diferentes tipos de estratégias requeridas nesse menu para acesso das funcionalidades. Para isso foi criado uma classe MainMenuStrategy que serve como contexto para as classes Strategy que representam as funcionalidade principais do sistema e as apresentam no menu.
+
+
+### Long Method:
+- Método editEmployee da classe Main era muito extenso.
+  - Refatoração: foi dividido em sete outros métodos auxiliares para melhorar a visibilidade e manutenção do método.
+  
+
+- Método set_schedule da classe Employee era muito extenso.
+  - Refatorado: foi divido em três outros métodos auxiliares para melhorar a visibilidade e manutenção do método. 
+    
+Nos dois casos, os padrões aplicados nos métodos foram:
+- [Decompose Conditional](https://sourcemaking.com/refactoring/decompose-conditional)
+- [Extract Method](https://sourcemaking.com/refactoring/extract-method)
+
+Além disso, após a refatoração, os tratamentos de erro do método também pararam de estar duplicados
+
+### Middle Man
+Os métodos get_union_employees, show_all_employees, get_employee_by_id tinha o code smell [Middle Man](https://sourcemaking.com/refactoring/smells/middle-man), que se caracteriza por métodos "de uma linha" que tem pouca utilidade real. Esse problema foi solucionado colocando a linha de código diretamente no método os chama.
+

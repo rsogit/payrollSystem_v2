@@ -25,6 +25,35 @@ class Employee:
         self._payment_method = payment_method
         self.set_schedule(schedule_type)
 
+    def set_monthly_frequency(self, day_frequency):
+        if isinstance(day_frequency, int):
+            if 0 < day_frequency <= 31:
+                self.set_range('MS', day_frequency)
+            else:
+                print("Selecione um dia do mês válido")
+        elif day_frequency == "$":
+            self.set_range('BM')
+        else:
+            print("A expressão de agenda de pagamento customizado está inválida, "
+                  "tente novamente no formato 'weekly 2 friday', por exemplo")
+
+    def set_weekly_frequency(self, day_frequency, weekday_frequency):
+        if weekday_frequency:
+            if isinstance(day_frequency, int):
+                self.set_range(f'{day_frequency}W-{get_week_day(weekday_frequency)}')
+            else:
+                print("A expressão de agenda de pagamento customizado está inválida, "
+                      "tente novamente no formato 'weekly 2 friday', por exemplo")
+
+    def set_range(self, freq, day_frequency=None):
+        hour = self._last_pay_date
+        if day_frequency is not None:
+            range = pd.date_range(hour, periods=12, freq=freq) \
+                + pd.DateOffset(days=(day_frequency-1))
+        else:
+            range = pd.date_range(hour, periods=12, freq=freq)
+        self._schedule = range.tolist()
+
     def set_schedule(self, schedule_type: str):
         schedule_types = schedule_type.split(" ")
         hour = self._last_pay_date
@@ -37,33 +66,10 @@ class Employee:
             weekday_frequency = "monday"
         else:
             weekday_frequency = schedule_types[2]
-
-        # Caso a frequência seja mensal, gera o intervalo com o offset do dia n.
-        # Caso o dia seja "$", gera o intervalo com o offset para o último dia útil
         if first_frequency == "monthly" or first_frequency == "mensal":
-            if isinstance(day_frequency, int):
-                if 0 < day_frequency <= 31:
-                    range = pd.date_range(hour, periods=12, freq='MS') \
-                            + pd.DateOffset(days=(day_frequency-1))
-                    self._schedule = range.tolist()
-                else:
-                    print("Selecione um dia do mês válido")
-            elif day_frequency == "$":
-                range = pd.date_range(hour, periods=12, freq='BM')
-                self._schedule = range.tolist()
-            else:
-                print("A expressão de agenda de pagamento customizado está inválida, "
-                      "tente novamente no formato 'weekly 2 friday', por exemplo")
-
-        # Caso a frequência seja semanal, gera o intervalo com o offset no dia da semana.
+            self.set_monthly_frequency(day_frequency)
         elif first_frequency == "weekly" or first_frequency == "semanal":
-            if weekday_frequency:
-                if isinstance(day_frequency, int):
-                    range = pd.date_range(hour, periods=12, freq=f'{day_frequency}W-{get_week_day(weekday_frequency)}')
-                    self._schedule = range.tolist()
-            else:
-                print("A expressão de agenda de pagamento customizado está inválida, "
-                      "tente novamente no formato 'weekly 2 friday', por exemplo")
+            self.set_weekly_frequency(day_frequency, weekday_frequency)
         else:
             return []
 

@@ -32,12 +32,12 @@ if __name__ == '__main__':
 
     # Uncomment the line above to use pre-made employees or add it yourself using the system
     initialize_employees()
+    company = Company("UFAL")
+    company.employees = employees
+    company.id_counting = id_counting
 
     while running:
-        company = Company("UFAL")
         company.show_menu()
-        company.employees = employees
-        company.id_counting = id_counting
 
         options = int(input("Selecione a opção que deseja acessar: "))
         if options == 1:

@@ -47,11 +47,8 @@ class UnionMember:
         self._union_id = union_id
 
     def add_service_fee(self):
-        if self._is_active:
-            tax = ServiceTaxes()
-            if tax:
-                self._service_taxes.append(tax)
-            else:
-                print("Falha na criacao da taxa. Por favor, tente novamente")
+        tax = ServiceTaxes()
+        if tax:
+            self._service_taxes.append(tax)
         else:
-            print("Desculpe, mas o funcionário não é ativo no sindicato, ative-o nas opcoes de editar funcionário")
+            print("Falha na criacao da taxa. Por favor, tente novamente")

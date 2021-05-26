@@ -68,7 +68,6 @@ class Hourly(Employee):
         else:
             print("O horário informado é inválido. Por favor, preencha o horário de entrada e saída na ordem correta.")
 
-
     def print_timecards(self):
         for (index, time_card) in enumerate(self._time_cards):
             print(f'{index+1} - Horas trabalhadas: {time_card.work_hours}hrs')
