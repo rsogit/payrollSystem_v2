@@ -4,8 +4,8 @@ Rodando o projeto
 -------
 Primeiro, rode os comandos abaixo no terminal:
 
-    $ git clone git@github.com:rsogit/payrollSystem.git
-    $ cd payrollSystem
+    $ git clone git@github.com:rsogit/payrollSystem_v2.git
+    $ cd payrollSystem_v2
 
 Instale as dependências:
 
